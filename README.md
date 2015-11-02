@@ -6,5 +6,12 @@ Primarily for the cases where you need some simple text, but don't want to use b
 for whatever reason. In my case, I needed some explanatory text on screen for automated graphics tests, that would never
 change if/when our font system changes.
 
-* SimpleTextMesh component: TextMesh equivalent (3D positioned text in world space)
-* SimpleGUIText component: GUIText equivalent (screenspace pixel-size text)
+![GameView](/Docs/GameView.png?raw=true "Simple text in game view")
+
+*SimpleTextMesh* component: TextMesh equivalent (3D positioned text in world space)
+
+![SimpleTextMesh](/Docs/InspectorSimpleTextMesh.png?raw=true "SimpleTextMesh")
+
+*SimpleGUIText* component: GUIText equivalent (screenspace pixel-size text)
+
+![SimpleGUIText](/Docs/InspectorSimpleGUIText.png?raw=true "SimpleGUIText")
