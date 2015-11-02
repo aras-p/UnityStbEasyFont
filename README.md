@@ -17,6 +17,17 @@ change if/when our font system changes.
 ![SimpleGUIText](/Docs/InspectorSimpleGUIText.png?raw=true "SimpleGUIText")
 
 
+## Unity version
+
+This project is built with Unity 5.1.1, but generally the code should work in pretty much any version. I think :)
+
+
+## Code Quality
+
+Code was just whipped together in a hurry ("throwaway prototype to validate idea" state right now),
+not much comments or robustness. Use at your own risk.
+
+
 ## License
 
 This software is in the public domain. Where that dedication is not
