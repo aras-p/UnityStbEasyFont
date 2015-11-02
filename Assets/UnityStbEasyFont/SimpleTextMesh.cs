@@ -39,7 +39,7 @@ public class SimpleTextMesh : MonoBehaviour {
 			offset.y = -offset.y;
 			var offsetMat = Matrix4x4.TRS(offset, Quaternion.identity, Vector3.one);
 			var scaleMat = Matrix4x4.Scale(new Vector3(scale,-scale,scale));
-			Graphics.DrawMesh(mesh, mtx * scaleMat * offsetMat, mat, 0);
+			Graphics.DrawMesh(mesh, mtx * scaleMat * offsetMat, mat, gameObject.layer);
 		}
 	}
 

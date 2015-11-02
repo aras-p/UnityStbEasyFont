@@ -36,6 +36,14 @@ public class SimpleGUIText : MonoBehaviour {
 
 	void RenderText(Camera cam)
 	{
+		// don't render if no GUILayer
+		var guiLayer = cam.GetComponent<GUILayer>();
+		if (guiLayer == null || !guiLayer.enabled)
+			return;
+		// our layer is culled
+		if ((cam.cullingMask & (1<<gameObject.layer)) == 0)
+			return;
+
 		UpdateMesh();
 		if (mesh == null)
 			return;
