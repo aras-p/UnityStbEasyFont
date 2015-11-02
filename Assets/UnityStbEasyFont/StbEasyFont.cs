@@ -77,14 +77,14 @@ public class StbEasyFont
 
 	static void GenerateSegs(float x, float y, byte[] segs, int segs_start, int num_segs, bool vertical, Color32 c, List<Vector3> vbuf, List<Color32> cbuf)
 	{
-	    for (int i = segs_start; i < segs_start + num_segs; ++i)
+		for (int i = segs_start; i < segs_start + num_segs; ++i)
 		{
-	        int len = segs[i] & 7;
-	        x += (float) ((segs[i] >> 3) & 1);
-	        if (len != 0)
+			int len = segs[i] & 7;
+			x += (float) ((segs[i] >> 3) & 1);
+			if (len != 0)
 			{
-	            float y0 = y + (float) (segs[i]>>4);
-	            for (int j = 0; j < 4; ++j)
+				float y0 = y + (float) (segs[i]>>4);
+				for (int j = 0; j < 4; ++j)
 				{
 					Vector3 pos = new Vector3(
 						x  + (j==1 || j==2 ? (vertical ? 1 : len) : 0),
@@ -94,14 +94,14 @@ public class StbEasyFont
 					vbuf.Add(pos);
 					if (cbuf != null)
 						cbuf.Add(c);
-	            }
-	        }
-	    }
+				}
+			}
+		}
 	}
 
 	static public void GenerateMesh(float x, float y, string text, Color32 color, List<Vector3> vertexBuffer, List<Color32> colorBuffer)
 	{
-	    float start_x = x;
+		float start_x = x;
 		int max_verts = 64000/4;
 
 		int textIndex = 0;
@@ -109,11 +109,11 @@ public class StbEasyFont
 		while (textIndex < textLength && vertexBuffer.Count < max_verts)
 		{
 			char textChar = text[textIndex];
-	        if (textChar == '\n')
+			if (textChar == '\n')
 			{
-	            y += 12;
-	            x = start_x;
-	        }
+				y += 12;
+				x = start_x;
+			}
 			else
 			{
 				int charIndex = (int)textChar - 32;
@@ -127,9 +127,9 @@ public class StbEasyFont
 				int num_v = kCharInfo[charIndex+1].v_seg - v_seg;
 				GenerateSegs(x, y_ch, kHSegs, h_seg, num_h, false, color, vertexBuffer, colorBuffer);
 				GenerateSegs(x, y_ch, kVSegs, v_seg, num_v, true, color, vertexBuffer, colorBuffer);
-	            x += advance & 15;
-	        }
-	        ++textIndex;
-	    }
+				x += advance & 15;
+			}
+			++textIndex;
+		}
 	}
 }
