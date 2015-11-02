@@ -2,18 +2,21 @@
 using System.Collections.Generic;
 
 [ExecuteInEditMode]
-public class EasyTextMesh : MonoBehaviour {
+public class SimpleTextMesh : MonoBehaviour {
 	[Multiline]
 	public string text = "ABC";
 	public Color32 color = new Color32(255,255,255,255);
+	public float characterSize = 1.0f;
 
 	private string prevText = null;
+	private Color32 prevColor = new Color32(0,0,0,0);
 	private Mesh mesh;
 	private Material mat;
 
+	const float kScaleFactor = 0.12f;
+
 	void Start () {
 		UpdateMesh();
-
 	}
 
 	void OnDisable()
@@ -28,7 +31,10 @@ public class EasyTextMesh : MonoBehaviour {
 		if (mesh != null)
 		{
 			UpdateMaterial();
-			Graphics.DrawMesh(mesh, transform.localToWorldMatrix, mat, 0);
+			var mtx = transform.localToWorldMatrix;
+			var scale = kScaleFactor * characterSize;
+			var scaleMat = Matrix4x4.Scale(new Vector3(scale,-scale,scale));
+			Graphics.DrawMesh(mesh, mtx * scaleMat, mat, 0);
 		}
 	}
 
@@ -50,9 +56,10 @@ public class EasyTextMesh : MonoBehaviour {
 
 	void UpdateMesh()
 	{
-		if (text == prevText && mesh != null)
+		if (text == prevText && color.Equals(prevColor) && mesh != null)
 			return;
 		prevText = text;
+		prevColor = color;
 
 		if (mesh != null)
 			mesh.Clear();
@@ -72,4 +79,18 @@ public class EasyTextMesh : MonoBehaviour {
 			indices[i] = i;
 		mesh.SetIndices(indices, MeshTopology.Quads, 0);
 	}
+
+	#if UNITY_EDITOR
+	[UnityEditor.MenuItem("GameObject/3D Object/Simple 3D Text")]
+	public static void CreateEasy3DText()
+	{
+		var go = new GameObject("New 3D Text", typeof(SimpleTextMesh));
+		go.GetComponent<SimpleTextMesh>().text = "Hello World";
+
+		var view = UnityEditor.SceneView.lastActiveSceneView;
+		if (view != null)
+			view.MoveToView(go.transform);
+		UnityEditor.Selection.activeGameObject = go;
+	}
+	#endif
 }
