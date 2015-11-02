@@ -3,6 +3,9 @@
 
 using UnityEngine;
 using System.Collections.Generic;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public class EasyFontUtilities
 {
@@ -90,10 +93,47 @@ public class EasyFontUtilities
 	#if UNITY_EDITOR
 	public static void SelectAndMoveToView(GameObject go)
 	{
-		var view = UnityEditor.SceneView.lastActiveSceneView;
+		var view = SceneView.lastActiveSceneView;
 		if (view != null)
 			view.MoveToView(go.transform);
-		UnityEditor.Selection.activeGameObject = go;
+		Selection.activeGameObject = go;
+	}
+	#endif
+
+	#if UNITY_EDITOR
+	[MenuItem("Tools/Replace with simple text")]
+	public static void ReplaceBuiltinWithSimple()
+	{
+		Undo.SetCurrentGroupName("Replaced texts");
+		var textMeshes = Object.FindObjectsOfType<TextMesh>();
+		foreach(var t in textMeshes)
+		{
+			var nt = Undo.AddComponent<SimpleTextMesh>(t.gameObject);
+			nt.text = t.text;
+			nt.anchor = t.anchor;
+			nt.characterSize = t.characterSize;
+			if (t.fontSize != 0)
+				nt.characterSize *= t.fontSize / 12.0f;
+			nt.color = t.color;
+
+			var renderer = t.gameObject.GetComponent<MeshRenderer>();
+			if (renderer)
+				Undo.DestroyObjectImmediate(renderer);
+			Undo.DestroyObjectImmediate(t);
+		}
+		var guiTexts = Object.FindObjectsOfType<GUIText>();
+		foreach(var t in guiTexts)
+		{
+			var nt = Undo.AddComponent<SimpleGUIText>(t.gameObject);
+			nt.text = t.text;
+			nt.anchor = t.anchor;
+			nt.characterSize = 1.0f;
+			if (t.fontSize != 0)
+				nt.characterSize *= t.fontSize / 12.0f;
+			nt.color = t.color;
+			nt.pixelOffset = t.pixelOffset;
+			Undo.DestroyObjectImmediate(t);
+		}
 	}
 	#endif
 }
