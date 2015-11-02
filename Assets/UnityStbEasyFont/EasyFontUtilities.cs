@@ -19,7 +19,7 @@ public class EasyFontUtilities
 		}
 		List<Vector3> vertices = new List<Vector3>();
 		List<Color32> colors = new List<Color32>();
-		StbEasyFont.stb_easy_font_print(0, 0, text, color, vertices, colors);
+		StbEasyFont.GenerateMesh(0, 0, text, color, vertices, colors);
 		mesh.vertices = vertices.ToArray();
 		mesh.colors32 = colors.ToArray();
 		mesh.subMeshCount = 1;
