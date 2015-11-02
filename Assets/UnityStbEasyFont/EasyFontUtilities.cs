@@ -45,6 +45,48 @@ public class EasyFontUtilities
 		return mat;
 	}
 
+	public static Vector3 CalcAnchorOffset(Mesh mesh, TextAnchor anchor)
+	{
+		var bounds = mesh.bounds;
+		var dx = bounds.extents.x;
+		var dy = bounds.extents.y + 1;
+		var offset = Vector3.zero;
+		// horizontal
+		switch (anchor)
+		{
+		case TextAnchor.LowerCenter:
+		case TextAnchor.MiddleCenter:
+		case TextAnchor.UpperCenter:
+			offset.x -= dx;
+			break;		
+		case TextAnchor.LowerRight:
+		case TextAnchor.MiddleRight:
+		case TextAnchor.UpperRight:
+			offset.x -= dx * 2f;
+			break;
+		default:
+			break;
+		}
+
+		// vertical
+		switch (anchor)
+		{
+		case TextAnchor.MiddleLeft:
+		case TextAnchor.MiddleRight:
+		case TextAnchor.MiddleCenter:
+			offset.y += dy;
+			break;
+		case TextAnchor.LowerLeft:
+		case TextAnchor.LowerRight:
+		case TextAnchor.LowerCenter:
+			offset.y += dy * 2f;
+			break;		
+		default:
+			break;
+		}
+		return offset;
+	}
+
 	#if UNITY_EDITOR
 	public static void SelectAndMoveToView(GameObject go)
 	{

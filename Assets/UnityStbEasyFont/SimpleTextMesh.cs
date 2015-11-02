@@ -10,6 +10,7 @@ public class SimpleTextMesh : MonoBehaviour {
 	public string text = "ABC";
 	public Color32 color = new Color32(255,255,255,255);
 	public float characterSize = 1.0f;
+	public TextAnchor anchor = TextAnchor.UpperLeft;
 
 	private string prevText = null;
 	private Color32 prevColor = new Color32(0,0,0,0);
@@ -34,8 +35,11 @@ public class SimpleTextMesh : MonoBehaviour {
 			UpdateMaterial();
 			var mtx = transform.localToWorldMatrix;
 			var scale = EasyFontUtilities.kScaleFactor * characterSize;
+			var offset = EasyFontUtilities.CalcAnchorOffset(mesh, anchor);
+			offset.y = -offset.y;
+			var offsetMat = Matrix4x4.TRS(offset, Quaternion.identity, Vector3.one);
 			var scaleMat = Matrix4x4.Scale(new Vector3(scale,-scale,scale));
-			Graphics.DrawMesh(mesh, mtx * scaleMat, mat, 0);
+			Graphics.DrawMesh(mesh, mtx * scaleMat * offsetMat, mat, 0);
 		}
 	}
 

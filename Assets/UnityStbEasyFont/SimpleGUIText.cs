@@ -8,6 +8,7 @@ using System.Collections.Generic;
 public class SimpleGUIText : MonoBehaviour {
 	[Multiline]
 	public string text = "ABC";
+	public TextAnchor anchor = TextAnchor.LowerLeft;
 	public Vector2 pixelOffset = Vector2.zero;
 	public Color32 color = new Color32(255,255,255,255);
 	public float characterSize = 1.0f;
@@ -44,18 +45,17 @@ public class SimpleGUIText : MonoBehaviour {
 		GL.LoadPixelMatrix();
 		mat.SetPass(0);
 
-		var mtx = transform.localToWorldMatrix;
-		var scale = characterSize;
-		var scaleMat = Matrix4x4.Scale(new Vector3(scale,-scale,scale));
-		mtx = mtx * scaleMat;
-
 		var camRect = cam.pixelRect;
 		var pos = transform.position;
-		pos.x = Mathf.Round(pos.x * camRect.width) + pixelOffset.x;
-		pos.y = Mathf.Round(pos.y * camRect.height) + pixelOffset.y;
+		pos.x = pos.x * camRect.width + pixelOffset.x;
+		pos.y = pos.y * camRect.height + pixelOffset.y;
 		pos.z = 0;
+		pos += EasyFontUtilities.CalcAnchorOffset(mesh, anchor);
+		pos.x = Mathf.Round(pos.x);
+		pos.y = Mathf.Round(pos.y);
 
-		mtx = Matrix4x4.TRS(pos, Quaternion.identity, new Vector3(scale,-scale,scale));
+		var scale = characterSize;
+		var mtx = Matrix4x4.TRS(pos, Quaternion.identity, new Vector3(scale,-scale,scale));
 
 		Graphics.DrawMeshNow(mesh, mtx);
 		GL.PopMatrix();
