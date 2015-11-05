@@ -1,5 +1,6 @@
 ﻿// port of stb_easy_font.h into Unity/C# - public domain
 // Aras Pranckevicius, 2015 November
+// https://github.com/aras-p/UnityStbEasyFont
 
 using UnityEngine;
 using System.Collections.Generic;
@@ -65,7 +66,11 @@ public class SimpleGUIText : MonoBehaviour {
 		var scale = characterSize;
 		var mtx = Matrix4x4.TRS(pos, Quaternion.identity, new Vector3(scale,-scale,scale));
 
+		// Note: DrawMeshNow sets up current camera's view matrix;
+		// so make sure that's identity and reset it afterwards
+		cam.worldToCameraMatrix = Matrix4x4.identity;
 		Graphics.DrawMeshNow(mesh, mtx);
+		cam.ResetWorldToCameraMatrix();
 		GL.PopMatrix();
 	}
 	
