@@ -56,8 +56,8 @@ public class SimpleGUIText : MonoBehaviour {
 
 		var camRect = cam.pixelRect;
 		var pos = transform.position;
-		pos.x = pos.x * camRect.width + pixelOffset.x;
-		pos.y = pos.y * camRect.height + pixelOffset.y;
+		pos.x = camRect.x + pos.x * camRect.width + pixelOffset.x;
+		pos.y = camRect.y + pos.y * camRect.height + pixelOffset.y;
 		pos.z = 0;
 		pos += EasyFontUtilities.CalcAnchorOffset(mesh, anchor);
 		pos.x = Mathf.Round(pos.x);
