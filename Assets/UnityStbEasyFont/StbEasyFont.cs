@@ -1,5 +1,6 @@
 ﻿// port of stb_easy_font.h into Unity/C# - public domain
 // Aras Pranckevicius, 2015 November
+// https://github.com/aras-p/UnityStbEasyFont
 //
 // Original one: https://github.com/nothings/stb/blob/master/stb_easy_font.h
 // stb_easy_font.h - v0.6 - bitmap font for 3D rendering - public domain
@@ -109,10 +110,14 @@ public class StbEasyFont
 		while (textIndex < textLength && vertexBuffer.Count < max_verts)
 		{
 			char textChar = text[textIndex];
-			if (textChar == '\n')
+			if (textChar == '\n' || textChar == '\t')
 			{
 				y += 12;
 				x = start_x;
+			}
+			else if (textChar < ' ')
+			{
+				// just skip various other control chars
 			}
 			else
 			{
